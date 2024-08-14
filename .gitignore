@@ -18,8 +18,8 @@ git
 __pycache__
 venv*/
 migrations
-
-
+**/xops/static/
+dj_blog/
 
 # temp
 *.swp
