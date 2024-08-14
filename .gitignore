@@ -1,0 +1,41 @@
+# ignore
+
+600-*/
+700-*/
+800-*/
+900-*/
+
+*.log
+*.png
+*jpg
+*.jpeg
+git 
+*.pdf
+
+
+# python
+*.pyc
+__pycache__
+venv*/
+migrations
+
+
+
+# temp
+*.swp
+build/
+dist/
+
+# ssh
+.ssh
+
+# obsidian
+.obsidian
+.Trash
+.DS_Store
+
+
+.vscode/
+
+# nodejs
+node_modules/
