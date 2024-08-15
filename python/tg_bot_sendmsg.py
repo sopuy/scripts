@@ -59,9 +59,6 @@ def main():
     args = parser.parse_args()
 
     if args.env == "prod":
-        from pathlib import Path
-
-        PROJECT_DIR = Path(__file__).parent
         handlers = [logging.FileHandler(f"{PROJECT_DIR}/logs/{PROG_NAME}.log", encoding="utf-8")]
     else:
         handlers = [logging.StreamHandler()]
