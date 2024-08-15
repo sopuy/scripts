@@ -7,6 +7,7 @@ __author__ = "Daning"
 Description:
     1. setup the variable: HOST_NAME
     2. copy the script to the directory: /etc/profile.d/
+    ps: you can use ansible set the variable: HOST_NAME and copy the script to the directory: /etc/profile.d/
 EOF
 
 COLOR_PRE_RED="\[\033[41;30m\]"
