@@ -117,7 +117,7 @@ def main():
 
 
 if __name__ == "__main__":
-    PROG_NAME = "tg_bot_api"
+    PROG_NAME = f"{Path(__file__).name}"
     PROG_VERSION = "0.0.1"
     PROG_DESC = "telegram bot api with sendMessage method;"
     main()
