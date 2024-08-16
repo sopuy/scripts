@@ -22,7 +22,7 @@ import ast
 logger = logging.getLogger(__name__)
 
 
-def send_tg_msg_to_user(**kwargs):
+def send_tg_msg(**kwargs):
     """
     send tg msg to user;
     Cannot be enabled webhook;
@@ -51,12 +51,38 @@ def send_tg_msg_to_user(**kwargs):
     return resp
 
 
+def send_tg_doc(**kwargs):
+    """
+    send tg doc to user;
+    https://core.telegram.org/bots/api#senddocument
+    https://core.telegram.org/bots/api#sending-files
+    """
+
+    chat_id = kwargs.get("chat_id")
+    tg_token = kwargs.get("tg_token")
+    file_path = kwargs.get("file_path")
+    https_proxy = kwargs.get("https_proxy", None)
+
+    tg_bot_api_send_doc = f"https://api.telegram.org/bot{tg_token}/sendDocument"
+    logger.info(f"start send file {file_path}")
+    with open(file_path, "rb") as file:
+        files = {"document": file}
+        payload = {"chat_id": chat_id, "caption": Path(file_path).name}
+        if https_proxy:
+            resp = requests.post(tg_bot_api_send_doc, data=payload, files=files, stream=True, proxies=https_proxy)
+        else:
+            resp = requests.post(tg_bot_api_send_doc, data=payload, files=files, stream=True)
+        logger.info(resp.text)
+        return resp
+
+
 def main():
     parser = argparse.ArgumentParser(description=PROG_DESC, add_help=True)
     parser.add_argument("-v", "--version", help="print version", action="version", version=PROG_VERSION)
     parser.add_argument("-e", "--env", help="set logger", default="dev")
-    parser.add_argument("-id", type=int, help="The chat ID to send the message to")
+    parser.add_argument("-t", "--type", choices=["msg", "doc"], help="msg or doc", default="msg")
     parser.add_argument("content", type=str, help="The content of the message")
+
     args = parser.parse_args()
 
     if args.env == "prod":
@@ -83,13 +109,12 @@ def main():
         https_proxy = None
         logger.info("send msg without proxy")
 
-    if args.id:
-        logger.info(f"send message to chat_id: {args.id}")
-        send_tg_msg_to_user(chat_id=args.id, content=args.content, tg_token=tg_token, https_proxy=https_proxy)
-
-    else:
-        logger.info("use default chat_id")
-        send_tg_msg_to_user(chat_id=chat_id, content=args.content, tg_token=tg_token, https_proxy=https_proxy)
+    if args.type == "doc":
+        logger.info(f"send doc to chat_id: {chat_id}")
+        send_tg_doc(chat_id=chat_id, file_path=args.content, tg_token=tg_token, https_proxy=https_proxy)
+    elif args.type == "msg":
+        logger.info(f"send message to chat_id: {chat_id}")
+        send_tg_msg(chat_id=chat_id, content=args.content, tg_token=tg_token, https_proxy=https_proxy)
 
 
 if __name__ == "__main__":
