@@ -25,8 +25,7 @@ logger = logging.getLogger(__name__)
 def send_tg_msg(**kwargs):
     """
     send tg msg to user;
-    Cannot be enabled webhook;
-    The user needs to send a message to the bot first and obtain the chat id through the TG getUpdates interface;
+    https://core.telegram.org/bots/api#sendmessage
     """
 
     chat_id = kwargs.get("chat_id")
@@ -86,7 +85,7 @@ def main():
     args = parser.parse_args()
 
     if args.env == "prod":
-        handlers = [logging.FileHandler(f"{PROJECT_DIR}/logs/{PROG_NAME}.log", encoding="utf-8")]
+        handlers = [logging.FileHandler(f"{PROJECT_DIR}/log_{PROG_NAME}.log", encoding="utf-8")]
     else:
         handlers = [logging.StreamHandler()]
 
@@ -118,7 +117,7 @@ def main():
 
 
 if __name__ == "__main__":
-    PROG_NAME = "tg_bot_sendmsg"
+    PROG_NAME = "tg_bot_api"
     PROG_VERSION = "0.0.1"
     PROG_DESC = "telegram bot api with sendMessage method;"
     main()
