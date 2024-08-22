@@ -16,8 +16,7 @@ import requests
 # optional
 from pathlib import Path
 import argparse
-from dotenv import dotenv_values
-import ast
+
 
 logger = logging.getLogger(__name__)
 
@@ -26,6 +25,8 @@ def send_tg_msg(**kwargs):
     """
     send tg msg to user;
     https://core.telegram.org/bots/api#sendmessage
+
+    Text of the message to be sent, 1-4096 characters after entities parsing
     """
 
     chat_id = kwargs.get("chat_id")
@@ -76,6 +77,9 @@ def send_tg_doc(**kwargs):
 
 
 def main():
+    from dotenv import dotenv_values
+    import ast
+
     parser = argparse.ArgumentParser(description=PROG_DESC, add_help=True)
     parser.add_argument("-v", "--version", help="print version", action="version", version=PROG_VERSION)
     parser.add_argument("-e", "--env", help="set logger", default="dev")
